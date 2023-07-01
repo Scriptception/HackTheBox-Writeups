@@ -1,9 +1,9 @@
 # Meow
 
-- Category: Starting Point - Tier 0
-- Difficulty: Very Easy
-- Tags: Misconfiguration, Network, Protocols, Reconnaissance, Telnet, Weak Credentials
-- Tools: Nmap, Telnet
+- **Category**: Starting Point - Tier 0
+- **Difficulty**: Very Easy
+- **Tags**: Misconfiguration, Network, Protocols, Reconnaissance, Telnet, Weak Credentials
+- **Tools**: Nmap, Telnet
 
 
 # Walkthrough
@@ -13,15 +13,17 @@
 
 
 
-> ✅ Virtual Machine
+> **Answer**: Virtual Machine
 
 ## Task 2: **What tool do we use to interact with the operating system in order to issue commands via the command line, such as the one to start our VPN connection? It's also known as a console or shell.**
 
-> ✅ Terminal
+> **Answer**: Terminal
 
 ## Task 3: **What service do we use to form our VPN connection into HTB labs?**
 
-> ✅ openvpn
+:heavy_check_mark: 
+
+>  openvpn
 
 ## Task 4: **What is the abbreviated name for a 'tunnel interface' in the output of your VPN boot-up sequence output?**
 
