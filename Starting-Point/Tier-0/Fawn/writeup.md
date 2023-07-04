@@ -3,7 +3,7 @@
 - **Category**: Starting Point - Tier 0
 - **Difficulty**: Very Easy
 - **Tags**: FTP, Network, Protocols, Reconnaissance, Anonymous/Guest Access
-- **Tools**: Nmap, Telnet
+- **Tools**: Nmap, FTP
 
 
 # Walkthrough
@@ -79,7 +79,7 @@ Service Info: OS: Unix
 Putting together what we've learnt from the last few tasks, we can now FTP into the target server with the `anonymous` user, find the flag, download it, and then read it.
 
 
-```
+```bash
 > ftp 10.129.57.230
 Connected to 10.129.57.230.
 220 (vsFTPd 3.0.3)
