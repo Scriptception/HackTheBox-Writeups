@@ -3,7 +3,7 @@
 - **Category**: Starting Point - Tier 0
 - **Difficulty**: Very Easy
 - **Tags**: Network, Protocols, SMB, Reconnaissance, Anonymous/Guest Access
-- **Tools**: 
+- **Tools**: nmap, smbclient
 
 
 # Walkthrough
