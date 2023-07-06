@@ -72,7 +72,7 @@ Howevr, in this case I've just run through the commands one-by-one to demonstrat
 > ipython
 In [1]: from pymongo import MongoClient
 
-In [2]: client = MongoClient('10.129.228.30', 27017)
+In [2]: client = MongoClient('10.129.58.99', 27017)
 
 In [3]: print(client.list_database_names())
 ['admin', 'config', 'local', 'sensitive_information', 'users']
