@@ -63,7 +63,7 @@ PORT      STATE SERVICE VERSION
 
 ## Submit Flag
 
-We can use the lightweight `pymongo` python package. You can install this and use with ipython for a lightweight MongoDB client.
+We can use the lightweight `pymongo` python package. You can install this and use with `ipython` for a lightweight MongoDB client.
 The advantage of utilising the python package is the ease in which we can automate it to suit our needs.
 Howevr, in this case I've just run through the commands one-by-one to demonstrate the process:
 
