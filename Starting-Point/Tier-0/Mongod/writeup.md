@@ -1,9 +1,9 @@
-# Dancing
+# Mongod
 
 - **Category**: Starting Point - Tier 0
 - **Difficulty**: Very Easy
 - **Tags**: MongoDB, Web, Databases, Reconnaissance, Misconfiguration, Anonymous/Guest Access - **Tools**: nmap
-- Tools: nmap, ipython+pymongo or mongodb
+- **Tools**: nmap, ipython+pymongo or mongodb
 
 
 # Walkthrough
@@ -61,7 +61,7 @@ PORT      STATE SERVICE VERSION
 
 > **Answer**: db.flag.find().pretty()
 
-## Submit Flag
+# Submit Root Flag
 
 We can use the lightweight `pymongo` python package. You can install this and use with `ipython` for a lightweight MongoDB client.
 The advantage of utilising the python package is the ease in which we can automate it to suit our needs.
