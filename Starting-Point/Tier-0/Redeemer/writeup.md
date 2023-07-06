@@ -73,6 +73,9 @@ Nmap done: 1 IP address (1 host up) scanned in 27.19 seconds
 # We can execute a command on the remote host
 # Here we grab the info and grep for the version
 > redis-cli -h 10.129.136.187 INFO | grep version
+redis_version:5.0.7
+gcc_version:9.3.0
+
 
 # Alternatively, we can start an interactive session
 # Here we run through the steps to find the flag
