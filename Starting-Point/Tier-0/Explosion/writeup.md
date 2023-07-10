@@ -8,8 +8,6 @@
 
 # Walkthrough
 
-sudo apt install freerdp-x11
-
 ## Task 1: What does the 3-letter acronym RDP stand for?
 
 > **Answer**: Remote Desktop Protocol
