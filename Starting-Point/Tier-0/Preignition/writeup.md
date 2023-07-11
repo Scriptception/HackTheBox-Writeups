@@ -3,7 +3,7 @@
 - **Category**: Starting Point - Tier 0
 - **Difficulty**: Very Easy
 - **Tags**: Web, Custom Applications, Apache, Reconnaissance, Web Site Structure Discovery, Default Credentials
-- **Tools**: nmap, gobuster
+- **Tools**: nmap, gobuster, hydra
 
 
 # Walkthrough
