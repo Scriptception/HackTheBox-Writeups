@@ -59,3 +59,4 @@ Every writeup follows the same layout so they're easy to skim:
 |-------------|---------|---------|
 | Appointment | Linux   | Done    |
 | Sequel      | Linux   | Done    |
+| Crocodile   | Linux   | Done    |
