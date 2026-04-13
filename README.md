@@ -58,4 +58,4 @@ Every writeup follows the same layout so they're easy to skim:
 | Box         | OS      | Status  |
 |-------------|---------|---------|
 | Appointment | Linux   | Done    |
-| Sequel      | Linux   | Pending |
+| Sequel      | Linux   | Done    |
