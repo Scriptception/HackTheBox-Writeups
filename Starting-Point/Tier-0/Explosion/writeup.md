@@ -10,35 +10,21 @@
 
 ## Summary
 
-A Windows host with RDP open and the `Administrator` account configured with
-a blank password. Connect with `xfreerdp` and grab the flag from the desktop.
+Windows host with RDP open and `Administrator` configured with a blank
+password. The trick is just remembering that on Windows, "blank password"
+means literally pressing Enter at the prompt, not sending an empty string in
+some special way.
 
-## Recon
+## Solve
 
 ```bash
 nmap -p 3389 -sV 10.129.1.13
-```
+# 3389/tcp open  ms-wbt-server Microsoft Terminal Services
 
-```
-Starting Nmap 7.93 ( https://nmap.org ) at 2023-07-10 19:06 AEST
-Nmap scan report for 10.129.1.13
-Host is up (0.29s latency).
-
-PORT     STATE SERVICE       VERSION
-3389/tcp open  ms-wbt-server Microsoft Terminal Services
-Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
-```
-
-## Foothold
-
-Connect over RDP as `Administrator` with no password:
-
-```bash
 xfreerdp /v:10.129.1.13 /u:Administrator
 # Press Enter at the password prompt
+# Flag is on the desktop
 ```
-
-## Flag
 
 ```
 951fa96d7830c451b536be5a6be008a0
@@ -55,4 +41,3 @@ xfreerdp /v:10.129.1.13 /u:Administrator
 | 5 | What is the name of the service running on port 3389 TCP? | ms-wbt-server |
 | 6 | What is the switch used to specify the target host's IP address when using xfreerdp? | /v: |
 | 7 | What username successfully returns a desktop projection to us with a blank password? | Administrator |
-| Flag | Submit Root Flag | `951fa96d7830c451b536be5a6be008a0` |

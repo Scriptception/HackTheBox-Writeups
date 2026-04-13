@@ -153,4 +153,3 @@ ea81b7afddd03efaa0945333ed147fac
 | 8  | Long form of `john`? | John The Ripper |
 | 9  | What is the password for the administrator user? | badminton |
 | 10 | We'll use a Windows service to remotely access the Responder machine. What TCP port does it listen on? | 5985 |
-| Flag | Submit root flag | `ea81b7afddd03efaa0945333ed147fac` |

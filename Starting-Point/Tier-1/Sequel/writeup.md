@@ -93,4 +93,3 @@ SELECT * FROM config;
 | 5 | In SQL, what symbol can we use to specify within the query that we want to display everything inside a table? | * |
 | 6 | In SQL, what symbol do we need to end each query with? | ; |
 | 7 | There are three databases in this MySQL instance that are common across all MySQL instances. What is the name of the fourth that's unique to this host? | htb |
-| Flag | Submit root flag | `7b4bec00d1a39e3dd4e021ec3d915da8` |

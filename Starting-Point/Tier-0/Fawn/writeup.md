@@ -10,68 +10,24 @@
 
 ## Summary
 
-An FTP server (vsftpd 3.0.3) that allows anonymous login. The flag is sitting
-in the anonymous user's directory ready to be downloaded.
+vsftpd 3.0.3 with anonymous login enabled. The flag is sitting in the
+anonymous user's home directory. The trick is recognising that "anonymous"
+isn't a special FTP feature, it's just an account convention some servers
+ship enabled by default.
 
-## Recon
-
-Probe the version on port 21:
+## Solve
 
 ```bash
 nmap -sV -p 21 10.129.57.230
-```
+# 21/tcp open  ftp     vsftpd 3.0.3
 
-```
-Starting Nmap 7.80 ( https://nmap.org ) at 2023-07-01 15:37 AEST
-Nmap scan report for 10.129.57.230
-Host is up (0.23s latency).
-
-PORT   STATE SERVICE VERSION
-21/tcp open  ftp     vsftpd 3.0.3
-Service Info: OS: Unix
-```
-
-OS detection (needs root) confirms a Unix host:
-
-```bash
-sudo nmap -O -p 21 10.129.57.230
-```
-
-## Foothold
-
-vsftpd allows anonymous login by default in many configurations. Username
-`anonymous` with a blank password works here.
-
-```bash
 ftp 10.129.57.230
 # Name: anonymous
 # Password: <blank>
-```
-
-## Flag
-
-```bash
-ftp 10.129.57.230
-Connected to 10.129.57.230.
-220 (vsFTPd 3.0.3)
-Name (10.129.57.230:josh): anonymous
-331 Please specify the password.
-Password:
-230 Login successful.
-Remote system type is UNIX.
-Using binary mode to transfer files.
 ftp> ls
-229 Entering Extended Passive Mode (|||65518|)
-150 Here comes the directory listing.
--rw-r--r--    1 0        0              32 Jun 04  2021 flag.txt
-226 Directory send OK.
+# -rw-r--r--    1 0  0  32 Jun 04  2021 flag.txt
 ftp> get flag.txt
-local: flag.txt remote: flag.txt
-229 Entering Extended Passive Mode (|||10748|)
-150 Opening BINARY mode data connection for flag.txt (32 bytes).
-226 Transfer complete.
 ftp> exit
-221 Goodbye.
 
 cat flag.txt
 035db21c881520061c53e0536e44f815
@@ -92,4 +48,3 @@ cat flag.txt
 | 9   | What is the response code we get for the FTP message 'Login successful'? | 230 |
 | 10  | There are a couple of commands we can use to list the files and directories available on the FTP server. One is `dir`. What is the other that is a common way to list files on a Linux system? | ls |
 | 11  | What is the command used to download the file we found on the FTP server? | get |
-| Flag | Submit root flag | `035db21c881520061c53e0536e44f815` |

